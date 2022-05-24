@@ -8,12 +8,13 @@ using System.Windows.Input;
 using SimpleTrader.WPF.Commands;
 using System.ComponentModel;
 using SimpleTrader.WPF.Models;
+using SimpleTrader.FinancialModelingPrepAPI;
 
 namespace SimpleTrader.WPF.State.Navigators
 {
     public class Navigator : ObservableObject, INavigator
     {
-        private ViewModelBase _currentViewModel = new HomeViewModel();
+        private ViewModelBase _currentViewModel = new HomeViewModel(MajorIndexViewModel.LoadMajorIndexViewModel(new MajorIndexService()));
 
         public ViewModelBase CurrentViewModel
         {

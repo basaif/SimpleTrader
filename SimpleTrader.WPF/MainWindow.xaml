@@ -6,7 +6,7 @@
         xmlns:c="clr-namespace:SimpleTrader.WPF.Controls"
         xmlns:local="clr-namespace:SimpleTrader.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Simple Trader" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

@@ -14,7 +14,7 @@ namespace SimpleTrader.WPF.State.Navigators
 {
     public class Navigator : ObservableObject, INavigator
     {
-        private ViewModelBase _currentViewModel = new HomeViewModel(MajorIndexViewModel.LoadMajorIndexViewModel(new MajorIndexService()));
+        private ViewModelBase _currentViewModel = new();
 
         public ViewModelBase CurrentViewModel
         {

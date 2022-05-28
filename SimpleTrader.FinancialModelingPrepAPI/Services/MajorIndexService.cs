@@ -6,22 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleTrader.FinancialModelingPrepAPI
+namespace SimpleTrader.FinancialModelingPrepAPI.Services
 {
     public class MajorIndexService : IMajorIndexService
     {
         public async Task<MajorIndex> GetMajorIndex(MajorIndexType indexType)
         {
-            using HttpClient client = new();
-            string file = AppDomain.CurrentDomain.BaseDirectory + @"Sensitive/sensitive.txt";
-            string apiKey = File.ReadAllText(file);
+            using FinancialModelingPrepHttpClient client = new();
+            
+            string uri = $"majors-indexes/{GetUriSuffix(indexType)}?apikey={FinancialModelingPrepHttpClient.GetApiKey()}";
 
-            string uri = $"https://financialmodelingprep.com/api/v3/majors-indexes/{GetUriSuffix(indexType)}?apikey={apiKey}";
-
-            HttpResponseMessage response = await client.GetAsync(uri);
-
-            MajorIndex majorIndex = await response.Content.ReadAsAsync<MajorIndex>();
+            MajorIndex majorIndex = await client.GetAsync<MajorIndex>(uri);
             majorIndex.Type = indexType;
+
             return majorIndex;
         }
 
@@ -29,10 +26,10 @@ namespace SimpleTrader.FinancialModelingPrepAPI
         {
             return indexType switch
             {
-                MajorIndexType.DowJones => ".DIJ",
+                MajorIndexType.DowJones => ".DJI",
                 MajorIndexType.Nasdaq => ".IXIC",
                 MajorIndexType.SP500 => ".INX",
-                _ => ".DIJ",
+                _ => throw new Exception("Major index type doesn't have a suffix defined."),
             };
         }
     }

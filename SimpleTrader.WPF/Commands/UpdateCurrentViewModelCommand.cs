@@ -1,4 +1,5 @@
 ﻿using SimpleTrader.FinancialModelingPrepAPI;
+using SimpleTrader.FinancialModelingPrepAPI.Services;
 using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels;
 using System;

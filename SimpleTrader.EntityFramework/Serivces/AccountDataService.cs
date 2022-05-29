@@ -13,12 +13,12 @@ using SimpleTrader.EntityFramework.Serivces.Common;
 
 namespace SimpleTrader.EntityFramework.Serivces
 {
-    public class AccontDataService : IDataService<Account>
+    public class AccountDataService : IDataService<Account>
     {
         private readonly SimpleTraderDbContextFactory _contextFactory;
         private readonly NonQueryDataService<Account> _nonQueryDataService;
 
-        public AccontDataService(SimpleTraderDbContextFactory contextFactory)
+        public AccountDataService(SimpleTraderDbContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
             _nonQueryDataService = new(_contextFactory);

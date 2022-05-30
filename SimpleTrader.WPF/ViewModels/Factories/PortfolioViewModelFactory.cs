@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.ViewModels.Factories
 {
-    public class PortfolioViewModelFactory : ISimpleTraderViewModelFactory<PortfolioViewModel>
+    public class PortfolioViewModelFactory : IViewModelFactory<PortfolioViewModel>
     {
         public PortfolioViewModel CreateViewModel()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.ViewModels.Factories
 {
-    internal class MajorIndexListingViewModelFactory : ISimpleTraderViewModelFactory<MajorIndexListingViewModel>
+    internal class MajorIndexListingViewModelFactory : IViewModelFactory<MajorIndexListingViewModel>
     {
         private readonly IMajorIndexService _majorIndexService;
 

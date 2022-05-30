@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.ViewModels.Factories
 {
-    public class HomeViewModelFactory : ISimpleTraderViewModelFactory<HomeViewModel>
+    public class HomeViewModelFactory : IViewModelFactory<HomeViewModel>
     {
-        private readonly ISimpleTraderViewModelFactory<MajorIndexListingViewModel> _majorIndexViewModelFactory;
+        private readonly IViewModelFactory<MajorIndexListingViewModel> _majorIndexViewModelFactory;
 
-        public HomeViewModelFactory(ISimpleTraderViewModelFactory<MajorIndexListingViewModel> majorIndexViewModelFactory)
+        public HomeViewModelFactory(IViewModelFactory<MajorIndexListingViewModel> majorIndexViewModelFactory)
         {
             _majorIndexViewModelFactory = majorIndexViewModelFactory;
         }

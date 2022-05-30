@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.ViewModels.Factories
 {
-    public class SimpleTraderViewModelAbstractFactory : ISimpleTraderViewModelAbstractFactory
+    public class RootViewModelFactory : IRootViewModelFactory
     {
-        private readonly ISimpleTraderViewModelFactory<HomeViewModel> _homeViewModelFactory;
-        private readonly ISimpleTraderViewModelFactory<PortfolioViewModel> _portfolioViewModelFactory;
+        private readonly IViewModelFactory<HomeViewModel> _homeViewModelFactory;
+        private readonly IViewModelFactory<PortfolioViewModel> _portfolioViewModelFactory;
+        private readonly BuyViewModel _buyViewModel;
 
-        public SimpleTraderViewModelAbstractFactory(ISimpleTraderViewModelFactory<HomeViewModel> homeViewModelFactory,
-            ISimpleTraderViewModelFactory<PortfolioViewModel> portfolioViewModelFactory)
+        public RootViewModelFactory(IViewModelFactory<HomeViewModel> homeViewModelFactory,
+            IViewModelFactory<PortfolioViewModel> portfolioViewModelFactory,
+            BuyViewModel buyViewModel)
         {
             _homeViewModelFactory = homeViewModelFactory;
             _portfolioViewModelFactory = portfolioViewModelFactory;
+            _buyViewModel = buyViewModel;
         }
         public ViewModelBase CreateViewModel(ViewType viewType)
         {
@@ -25,6 +28,7 @@ namespace SimpleTrader.WPF.ViewModels.Factories
             {
                 ViewType.Home => _homeViewModelFactory.CreateViewModel(),
                 ViewType.Portfolio => _portfolioViewModelFactory.CreateViewModel(),
+                ViewType.Buy => _buyViewModel,
                 _ => throw new ArgumentException("The View Type doesn't have a View Model", nameof(viewType)),
             };
         }

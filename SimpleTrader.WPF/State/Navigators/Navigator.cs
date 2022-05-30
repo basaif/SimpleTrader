@@ -31,7 +31,7 @@ namespace SimpleTrader.WPF.State.Navigators
         }
         public ICommand UpdateCurrentViewModelCommand { get; set; }
 
-        public Navigator(ISimpleTraderViewModelAbstractFactory viewModelFactory)
+        public Navigator(IRootViewModelFactory viewModelFactory)
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
         }

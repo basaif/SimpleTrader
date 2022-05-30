@@ -38,16 +38,17 @@ namespace SimpleTrader.WPF
 
             services.AddSingleton<SimpleTraderDbContextFactory>();
             services.AddSingleton<IDataService<Account>, AccountDataService>();
-            services.AddSingleton<IStockPriceService, StockPriceService>();
+            services.AddSingleton<IStockPriceService, DummyStockPriceService>();
             services.AddSingleton<IBuyStockService, BuyStockService>();
             services.AddSingleton<IMajorIndexService, MajorIndexService>();
 
-            services.AddSingleton<ISimpleTraderViewModelAbstractFactory, SimpleTraderViewModelAbstractFactory>();
-            services.AddSingleton<ISimpleTraderViewModelFactory<HomeViewModel>, HomeViewModelFactory>();
-            services.AddSingleton<ISimpleTraderViewModelFactory<MajorIndexListingViewModel>, MajorIndexListingViewModelFactory>();
-            services.AddSingleton<ISimpleTraderViewModelFactory<PortfolioViewModel>, PortfolioViewModelFactory>();
+            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<HomeViewModel>, HomeViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<MajorIndexListingViewModel>, MajorIndexListingViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<PortfolioViewModel>, PortfolioViewModelFactory>();
 
             services.AddScoped<MainViewModel>();
+            services.AddScoped<BuyViewModel>();
             services.AddScoped<INavigator, Navigator>();
 
             services.AddScoped(s => new MainWindow(s.GetRequiredService<MainViewModel>()));

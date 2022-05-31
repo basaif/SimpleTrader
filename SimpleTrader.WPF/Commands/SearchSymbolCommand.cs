@@ -33,6 +33,7 @@ namespace SimpleTrader.WPF.Commands
             {
                 double stockPrice = await _stockPriceService.GetStockPriceAsync(_buyViewModel.Symbol);
                 _buyViewModel.StockPrice = stockPrice;
+                _buyViewModel.SearchResultSymbol = _buyViewModel.Symbol.ToUpper();
             }
             catch (Exception e)
             {

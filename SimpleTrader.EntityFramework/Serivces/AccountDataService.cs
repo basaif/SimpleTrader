@@ -13,7 +13,7 @@ using SimpleTrader.EntityFramework.Serivces.Common;
 
 namespace SimpleTrader.EntityFramework.Serivces
 {
-    public class AccountDataService : IDataService<Account>
+    public class AccountDataService : IAccountService
     {
         private readonly SimpleTraderDbContextFactory _contextFactory;
         private readonly NonQueryDataService<Account> _nonQueryDataService;
@@ -39,8 +39,10 @@ namespace SimpleTrader.EntityFramework.Serivces
 
             if (context.Accounts is not null)
             {
-                Account? entity = await context.Accounts.Include(a => a.AssetTransactions)
-                                                            .FirstOrDefaultAsync(e => e.Id == id);
+                Account? entity = await context.Accounts
+                    .Include(a => a.AccountHolder)
+                    .Include(a => a.AssetTransactions)
+                    .FirstOrDefaultAsync(e => e.Id == id);
                 if (entity is not null)
                 {
                     return entity;
@@ -54,10 +56,51 @@ namespace SimpleTrader.EntityFramework.Serivces
             using SimpleTraderDbContext context = _contextFactory.CreateDbContext();
             if (context.Accounts is not null)
             {
-                IEnumerable<Account> entities = await context.Accounts.Include(a => a.AssetTransactions).ToListAsync();
+                IEnumerable<Account> entities = await context.Accounts
+                    .Include(a => a.AccountHolder)
+                    .Include(a => a.AssetTransactions)
+                    .ToListAsync();
                 return entities;
             }
             throw new Exception();
+        }
+
+        public async Task<Account> GetByEmail(string email)
+        {
+            using SimpleTraderDbContext context = _contextFactory.CreateDbContext();
+
+            if (context.Accounts is not null)
+            {
+                Account? entity = await context.Accounts
+                    .Include(a => a.AccountHolder)
+                    .Include(a => a.AssetTransactions)
+                    .FirstOrDefaultAsync(e => e.AccountHolder.Email == email);
+
+                if (entity is not null)
+                {
+                    return entity;
+                }
+            }
+            return (Account)new DomainObject();
+        }
+
+        public async Task<Account> GetByUsername(string username)
+        {
+            using SimpleTraderDbContext context = _contextFactory.CreateDbContext();
+
+            if (context.Accounts is not null)
+            {
+                Account? entity = await context.Accounts
+                    .Include(a => a.AccountHolder)
+                    .Include(a => a.AssetTransactions)
+                    .FirstOrDefaultAsync(e => e.AccountHolder.Username == username);
+
+                if (entity is not null)
+                {
+                    return entity;
+                }
+            }
+            return (Account)new DomainObject();
         }
 
         public async Task<Account> Update(int id, Account entity)

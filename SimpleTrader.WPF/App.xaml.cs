@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using SimpleTrader.Domain.Models;
 using SimpleTrader.Domain.Services;
+using SimpleTrader.Domain.Services.AuthenticationServices;
 using SimpleTrader.Domain.Services.TransactionServices;
 using SimpleTrader.EntityFramework;
 using SimpleTrader.EntityFramework.Serivces;
@@ -38,9 +40,13 @@ namespace SimpleTrader.WPF
 
             services.AddSingleton<SimpleTraderDbContextFactory>();
             services.AddSingleton<IDataService<Account>, AccountDataService>();
+            services.AddSingleton<IAccountService, AccountDataService>();
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IStockPriceService, DummyStockPriceService>();
             services.AddSingleton<IBuyStockService, BuyStockService>();
             services.AddSingleton<IMajorIndexService, MajorIndexService>();
+
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
             services.AddSingleton<IViewModelFactory<HomeViewModel>, HomeViewModelFactory>();

@@ -65,7 +65,7 @@ namespace SimpleTrader.EntityFramework.Serivces
             throw new Exception();
         }
 
-        public async Task<Account> GetByEmail(string email)
+        public async Task<Account>? GetByEmail(string email)
         {
             using SimpleTraderDbContext context = _contextFactory.CreateDbContext();
 
@@ -81,10 +81,10 @@ namespace SimpleTrader.EntityFramework.Serivces
                     return entity;
                 }
             }
-            return (Account)new DomainObject();
+            return null;
         }
 
-        public async Task<Account> GetByUsername(string username)
+        public async Task<Account>? GetByUsername(string username)
         {
             using SimpleTraderDbContext context = _contextFactory.CreateDbContext();
 
@@ -100,7 +100,7 @@ namespace SimpleTrader.EntityFramework.Serivces
                     return entity;
                 }
             }
-            return (Account)new DomainObject();
+            return null;
         }
 
         public async Task<Account> Update(int id, Account entity)

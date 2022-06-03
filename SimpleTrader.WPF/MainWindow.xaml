@@ -6,7 +6,7 @@
         xmlns:c="clr-namespace:SimpleTrader.WPF.Controls"
         xmlns:local="clr-namespace:SimpleTrader.WPF"
         mc:Ignorable="d"
-        Title="Simple Trader" Height="450" Width="800">
+        Title="Simple Trader" Height="550" Width="900" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -22,7 +22,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <c:NavigationBar DataContext="{Binding Navigator}" />
+            <c:NavigationBar/>
         </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">

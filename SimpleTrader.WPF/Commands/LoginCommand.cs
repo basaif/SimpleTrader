@@ -1,4 +1,5 @@
 ﻿using SimpleTrader.WPF.State.Authenticators;
+using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace SimpleTrader.WPF.Commands
     {
         private readonly IAuthenticator _authenticator;
         private readonly LoginViewModel _loginViewModel;
+        private readonly IRenavigator _renavigator;
 
         public event EventHandler? CanExecuteChanged;
 
-        public LoginCommand(IAuthenticator authenticator, LoginViewModel loginViewModel)
+        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator, IRenavigator renavigator)
         {
             _authenticator = authenticator;
             _loginViewModel = loginViewModel;
+            _renavigator = renavigator;
         }
 
         public bool CanExecute(object? parameter)
@@ -32,6 +35,10 @@ namespace SimpleTrader.WPF.Commands
             if (parameter is string password)
             {
                 bool success = await _authenticator.Login(_loginViewModel.Username, password); 
+                if (success)
+                {
+                    _renavigator.Renavigate(); 
+                }
             }
         }
     }

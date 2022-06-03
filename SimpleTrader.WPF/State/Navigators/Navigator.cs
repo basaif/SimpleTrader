@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SimpleTrader.WPF.Commands;
 using System.ComponentModel;
-using SimpleTrader.WPF.Models;
 using SimpleTrader.FinancialModelingPrepAPI;
 using SimpleTrader.WPF.ViewModels.Factories;
 

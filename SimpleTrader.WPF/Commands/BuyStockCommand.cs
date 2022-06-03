@@ -40,6 +40,8 @@ namespace SimpleTrader.WPF.Commands
                     _buyViewModel.Symbol, _buyViewModel.SharesToBuy);
 
                 _accountStore.CurrentAccount = account;
+
+                MessageBox.Show("Success");
             }
             catch (Exception e)
             {

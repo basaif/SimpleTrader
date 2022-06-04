@@ -361,6 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-SimpleTrader.WPF/Sensitive
-SimpleTrader.WPF/Sensitive/sensitive.txt

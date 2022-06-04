@@ -25,12 +25,5 @@ namespace SimpleTrader.FinancialModelingPrepAPI
 
             return result;
         }
-
-        private static string GetApiKey()
-        {
-            string file = AppDomain.CurrentDomain.BaseDirectory + @"Sensitive/sensitive.txt";
-            string apiKey = File.ReadAllText(file);
-            return apiKey;
-        } 
     }
 }

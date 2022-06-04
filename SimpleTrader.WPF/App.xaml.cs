@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleTrader.Domain.Models;
 using SimpleTrader.Domain.Services;
@@ -18,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -39,12 +41,29 @@ namespace SimpleTrader.WPF
             base.OnStartup(e);
         }
 
-        private IServiceProvider CreateServiceProvider()
+        private static IConfiguration AddConfiguration()
+        {
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            builder.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+
+            return builder.Build();
+        }
+
+        private static IServiceProvider CreateServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
+            
+            services.AddSingleton(AddConfiguration());
 
-            string apiKey = 
-            services.AddSingleton(new FinancialModelingPrepHttpClientFactory());
+            
+            services.AddSingleton(services =>
+            {
+                IConfiguration config = services.GetRequiredService<IConfiguration>();
+                string apiKey = config.GetValue<string>("ApiKey");
+                return new FinancialModelingPrepHttpClientFactory(apiKey);
+            });
 
             services.AddSingleton<SimpleTraderDbContextFactory>();
             services.AddSingleton<IDataService<Account>, AccountDataService>();

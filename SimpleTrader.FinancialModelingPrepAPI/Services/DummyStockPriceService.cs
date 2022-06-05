@@ -28,6 +28,7 @@ namespace SimpleTrader.FinancialModelingPrepAPI.Services
         private async Task<Dictionary<string, double>> GetStockPriceDictionaryAsync()
         {
             Dictionary<string, double> stockPrices = new();
+            await Task.Delay(500);
             await Task.Run(() =>
             {
                 

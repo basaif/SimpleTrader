@@ -21,7 +21,7 @@
                 <Views:BuyView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type ViewModels:LoginViewModel}">
-                <Views:LoginView/>
+                <Views:LoginView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type ViewModels:RegisterViewModel}">
                 <Views:RegisterView />

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace SimpleTrader.WPF
 {
@@ -94,16 +95,26 @@ namespace SimpleTrader.WPF
                         return () => services.GetRequiredService<PortfolioViewModel>();
                     });
 
+                    services.AddSingleton<CreateViewModel<RegisterViewModel>>(services =>
+                    {
+                        return () => new RegisterViewModel(
+                            services.GetRequiredService<ViewModelRenavigator<LoginViewModel>>(),
+                            services.GetRequiredService<IAuthenticator>(),
+                            services.GetRequiredService<ViewModelRenavigator<LoginViewModel>>());
+                    });
+
                     services.AddSingleton<ViewModelRenavigator<HomeViewModel>>();
+                    services.AddSingleton<ViewModelRenavigator<RegisterViewModel>>();
+                    services.AddSingleton<ViewModelRenavigator<LoginViewModel>>();
 
                     services.AddSingleton<CreateViewModel<LoginViewModel>>(services =>
                     {
                         return () => new LoginViewModel(services.GetRequiredService<IAuthenticator>(),
-                            services.GetRequiredService<ViewModelRenavigator<HomeViewModel>>());
+                            services.GetRequiredService<ViewModelRenavigator<HomeViewModel>>(),
+                            services.GetRequiredService<ViewModelRenavigator<RegisterViewModel>>());
                     });
 
                     services.AddScoped<MainViewModel>();
-                    services.AddScoped<BuyViewModel>();
                     services.AddSingleton<INavigator, Navigator>();
                     services.AddSingleton<IAuthenticator, Authenticator>();
                     services.AddSingleton<IAccountStore, AccountStore>();

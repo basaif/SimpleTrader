@@ -16,15 +16,13 @@ using System.Windows.Shapes;
 namespace SimpleTrader.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for RegisterView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class RegisterView : UserControl
     {
-
-        public LoginView()
+        public RegisterView()
         {
             InitializeComponent();
         }
-
     }
 }

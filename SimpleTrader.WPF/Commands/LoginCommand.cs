@@ -27,29 +27,27 @@ namespace SimpleTrader.WPF.Commands
         protected override async Task ExecuteAsync(object? parameter)
         {
             _loginViewModel.ErrorMessage = string.Empty;
-            if (parameter is string password)
+
+            try
             {
+                await _authenticator.Login(_loginViewModel.Username, _loginViewModel.Password);
 
-                try
-                {
-                    await _authenticator.Login(_loginViewModel.Username, password);
-
-                    _renavigator.Renavigate();
-                }
-                catch (UserNotFoundException)
-                {
-                    _loginViewModel.ErrorMessage = "Username does not exist.";
-                }
-                catch (InvalidPasswordException)
-                {
-                    _loginViewModel.ErrorMessage = "Incorrect password.";
-                }
-                catch (Exception)
-                {
-                    _loginViewModel.ErrorMessage = "Login failed.";
-                }
-
+                _renavigator.Renavigate();
             }
+            catch (UserNotFoundException)
+            {
+                _loginViewModel.ErrorMessage = "Username does not exist.";
+            }
+            catch (InvalidPasswordException)
+            {
+                _loginViewModel.ErrorMessage = "Incorrect password.";
+            }
+            catch (Exception)
+            {
+                _loginViewModel.ErrorMessage = "Login failed.";
+            }
+
+
         }
     }
 }

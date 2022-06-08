@@ -67,6 +67,7 @@ namespace SimpleTrader.WPF
                     services.AddSingleton<IAuthenticationService, AuthenticationService>();
                     services.AddSingleton<IStockPriceService, DummyStockPriceService>();
                     services.AddSingleton<IBuyStockService, BuyStockService>();
+                    services.AddSingleton<ISellStockService, SellStockService>();
                     services.AddSingleton<IMajorIndexService, MajorIndexService>();
 
                     services.AddSingleton<IPasswordHasher, PasswordHasher>();

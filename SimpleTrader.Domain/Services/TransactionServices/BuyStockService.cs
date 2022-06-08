@@ -24,7 +24,7 @@ namespace SimpleTrader.Domain.Services.TransactionServices
 
             double transactionPrice = stockPrice * shares;
 
-            if (stockPrice > buyer.Balance - transactionPrice)
+            if (transactionPrice > buyer.Balance)
             {
                 throw new InsufficientFundsException(buyer.Balance, transactionPrice);
             }

@@ -11,19 +11,20 @@ namespace SimpleTrader.EntityFramework
 {
     public class SimpleTraderDbContextFactory
     {
-        private readonly string _connectionString;
+        private readonly Action<DbContextOptionsBuilder> _configureDbContext;
 
-        public SimpleTraderDbContextFactory(string connectionString)
+        public SimpleTraderDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
         {
-            _connectionString = connectionString;
+            _configureDbContext = configureDbContext;
         }
-        public SimpleTraderDbContext CreateDbContext(string[]? args = null)
+
+        public SimpleTraderDbContext CreateDbContext()
         {
-            var options = new DbContextOptionsBuilder<SimpleTraderDbContext>();
-            options.UseSqlServer(_connectionString);
+            DbContextOptionsBuilder<SimpleTraderDbContext> options = new();
+
+            _configureDbContext(options);
 
             return new SimpleTraderDbContext(options.Options);
-
         }
     }
 }

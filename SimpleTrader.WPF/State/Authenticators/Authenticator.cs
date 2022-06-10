@@ -29,7 +29,7 @@ namespace SimpleTrader.WPF.State.Authenticators
         }
         public bool IsLoggedIn => CurrentAccount != null;
 
-        public event Action StateChanged;
+        public event Action? StateChanged;
 
         public Authenticator(IAuthenticationService authenticationService, IAccountStore accountStore)
         {

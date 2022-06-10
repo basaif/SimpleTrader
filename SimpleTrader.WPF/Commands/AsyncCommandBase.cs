@@ -20,14 +20,13 @@ namespace SimpleTrader.WPF.Commands
             set
             {
                 _isExecuting = value;
-                CanExecuteChanged?.Invoke(this, new EventArgs());
+                OnCanExecuteChanged();
             }
         }
 
         public event EventHandler? CanExecuteChanged;
 
-
-        public bool CanExecute(object? parameter)
+        public virtual bool CanExecute(object? parameter)
         {
             return !IsExecuting;
         }
@@ -35,10 +34,17 @@ namespace SimpleTrader.WPF.Commands
         public async void Execute(object? parameter)
         {
             IsExecuting = true;
+
             await ExecuteAsync(parameter);
+
             IsExecuting = false;
         }
 
-        protected abstract Task ExecuteAsync(object? parameter);
+        public abstract Task ExecuteAsync(object? parameter);
+
+        protected void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace SimpleTrader.WPF.Commands
             _authenticator = authenticator;
             _registerRenavigator = registerRenavigator;
         }
-        protected override async Task ExecuteAsync(object? parameter)
+        public override async Task ExecuteAsync(object? parameter)
         {
             _registerViewModel.ErrorMessage = string.Empty;
             try

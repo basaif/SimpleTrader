@@ -5,6 +5,7 @@ using SimpleTrader.WPF.State.Accounts;
 using SimpleTrader.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,15 +20,21 @@ namespace SimpleTrader.WPF.Commands
         private readonly IBuyStockService _buyStockService;
         private readonly IAccountStore _accountStore;
 
-        public BuyStockCommand(BuyViewModel buyViewModel, IBuyStockService buyStockService,
-            IAccountStore accountStore)
+        public BuyStockCommand(BuyViewModel buyViewModel, IBuyStockService buyStockService, IAccountStore accountStore)
         {
             _buyViewModel = buyViewModel;
             _buyStockService = buyStockService;
             _accountStore = accountStore;
+
+            _buyViewModel.PropertyChanged += BuyViewModel_PropertyChanged;
         }
 
-        protected override async Task ExecuteAsync(object? parameter)
+        public override bool CanExecute(object? parameter)
+        {
+            return _buyViewModel.CanBuyStock && base.CanExecute(parameter);
+        }
+
+        public override async Task ExecuteAsync(object? parameter)
         {
             _buyViewModel.StatusMessage = string.Empty;
             _buyViewModel.ErrorMessage = string.Empty;
@@ -36,9 +43,7 @@ namespace SimpleTrader.WPF.Commands
             {
                 string symbol = _buyViewModel.Symbol;
                 int shares = _buyViewModel.SharesToBuy;
-
-                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount,
-                    symbol, shares);
+                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount, symbol, shares);
 
                 _accountStore.CurrentAccount = account;
 
@@ -54,7 +59,15 @@ namespace SimpleTrader.WPF.Commands
             }
             catch (Exception)
             {
-                _buyViewModel.ErrorMessage = "Transaction Failed";
+                _buyViewModel.ErrorMessage = "Transaction failed.";
+            }
+        }
+
+        private void BuyViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BuyViewModel.CanBuyStock))
+            {
+                OnCanExecuteChanged();
             }
         }
     }

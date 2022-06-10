@@ -42,7 +42,7 @@ namespace SimpleTrader.WPF
             _host = CreateHostBuilder().Build();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args = null)
+        public static IHostBuilder CreateHostBuilder(string[]? args = null)
         {
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(c =>
@@ -52,11 +52,13 @@ namespace SimpleTrader.WPF
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    string connectionString = context.Configuration.GetConnectionString("default");
                     string apiKey = context.Configuration.GetValue<string>("ApiKey");
 
-                    services.AddDbContext<SimpleTraderDbContext>(o => o.UseSqlServer(connectionString));
-                    services.AddSingleton<SimpleTraderDbContextFactory>(new SimpleTraderDbContextFactory(connectionString));
+                    string connectionString = context.Configuration.GetConnectionString("sqlite");
+                    void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString);
+
+                    services.AddDbContext<SimpleTraderDbContext>(configureDbContext);
+                    services.AddSingleton<SimpleTraderDbContextFactory>(new SimpleTraderDbContextFactory(configureDbContext));
                     services.AddSingleton(services =>
                     {
                         return new FinancialModelingPrepHttpClientFactory(apiKey);
@@ -74,6 +76,7 @@ namespace SimpleTrader.WPF
 
                     services.AddSingleton<IViewModelFactory, ViewModelFactory>();
                     services.AddSingleton<BuyViewModel>();
+                    services.AddSingleton<SellViewModel>();
                     services.AddSingleton<PortfolioViewModel>();
                     services.AddSingleton<AssetSummaryViewModel>();
                     services.AddSingleton(services =>
@@ -90,6 +93,10 @@ namespace SimpleTrader.WPF
                     services.AddSingleton<CreateViewModel<BuyViewModel>>(services =>
                     {
                         return () => services.GetRequiredService<BuyViewModel>();
+                    });
+                    services.AddSingleton<CreateViewModel<SellViewModel>>(services =>
+                    {
+                        return () => services.GetRequiredService<SellViewModel>();
                     });
                     services.AddSingleton<CreateViewModel<PortfolioViewModel>>(services =>
                     {
@@ -128,6 +135,12 @@ namespace SimpleTrader.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             _host.Start();
+
+            SimpleTraderDbContextFactory contextFactory = _host.Services.GetRequiredService<SimpleTraderDbContextFactory>();
+            using (SimpleTraderDbContext context = contextFactory.CreateDbContext())
+            {
+                context.Database.Migrate();
+            }
 
             Window window = _host.Services.GetRequiredService<MainWindow>();
          

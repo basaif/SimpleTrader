@@ -27,7 +27,7 @@ namespace SimpleTrader.WPF.ViewModels
             }
         }
 
-        private string _password;
+        private string _password = string.Empty;
         public string Password
         {
             get

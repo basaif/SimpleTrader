@@ -24,7 +24,7 @@ namespace SimpleTrader.WPF.Commands
             _renavigator = renavigator;
         }
 
-        protected override async Task ExecuteAsync(object? parameter)
+        public override async Task ExecuteAsync(object? parameter)
         {
             _loginViewModel.ErrorMessage = string.Empty;
 

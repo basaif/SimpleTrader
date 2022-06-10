@@ -3,6 +3,7 @@ using SimpleTrader.Domain.Services;
 using SimpleTrader.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,30 +14,46 @@ namespace SimpleTrader.WPF.Commands
 {
     public class SearchSymbolCommand : AsyncCommandBase
     {
-        private readonly BuyViewModel _buyViewModel;
+        private readonly ISearchSymbolViewModel _viewModel;
         private readonly IStockPriceService _stockPriceService;
 
-        public SearchSymbolCommand(BuyViewModel buyViewModel, IStockPriceService stockPriceService)
+        public SearchSymbolCommand(ISearchSymbolViewModel viewModel, IStockPriceService stockPriceService)
         {
-            _buyViewModel = buyViewModel;
+            _viewModel = viewModel;
             _stockPriceService = stockPriceService;
+
+            _viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
-        protected override async Task ExecuteAsync(object? parameter)
+
+        public override bool CanExecute(object? parameter)
         {
-            _buyViewModel.ErrorMessage = string.Empty;
+            return _viewModel.CanSearchSymbol && base.CanExecute(parameter);
+        }
+
+        public override async Task ExecuteAsync(object? parameter)
+        {
             try
             {
-                double stockPrice = await _stockPriceService.GetStockPriceAsync(_buyViewModel.Symbol);
-                _buyViewModel.StockPrice = stockPrice;
-                _buyViewModel.SearchResultSymbol = _buyViewModel.Symbol.ToUpper();
+                double stockPrice = await _stockPriceService.GetStockPriceAsync(_viewModel.Symbol);
+
+                _viewModel.SearchResultSymbol = _viewModel.Symbol.ToUpper();
+                _viewModel.StockPrice = stockPrice;
             }
             catch (InvalidSymbolException)
             {
-                _buyViewModel.ErrorMessage = "Symbol does not exist.";
+                _viewModel.ErrorMessage = "Symbol does not exist.";
             }
             catch (Exception)
             {
-                _buyViewModel.ErrorMessage = "Failed to get symbol information.";
+                _viewModel.ErrorMessage = "Failed to get symbol information.";
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ISearchSymbolViewModel.CanSearchSymbol))
+            {
+                OnCanExecuteChanged();
             }
         }
     }

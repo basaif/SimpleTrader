@@ -1,7 +1,8 @@
-﻿using SimpleTrader.Domain.Services;
-using SimpleTrader.Domain.Services.TransactionServices;
+﻿using SimpleTrader.Domain.Services.TransactionServices;
+using SimpleTrader.Domain.Services;
 using SimpleTrader.WPF.Commands;
 using SimpleTrader.WPF.State.Accounts;
+using SimpleTrader.WPF.State.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +12,27 @@ using System.Windows.Input;
 
 namespace SimpleTrader.WPF.ViewModels
 {
-    public class BuyViewModel : ViewModelBase, ISearchSymbolViewModel
+    public class SellViewModel : ViewModelBase, ISearchSymbolViewModel
     {
-        private string _symbol = string.Empty;
-        public string Symbol
+        public AssetListingViewModel AssetListingViewModel { get; }
+
+        private AssetViewModel? _selectedAsset;
+        public AssetViewModel? SelectedAsset
         {
             get
             {
-                return _symbol;
+                return _selectedAsset;
             }
             set
             {
-                _symbol = value;
+                _selectedAsset = value;
+                OnPropertyChanged(nameof(SelectedAsset));
                 OnPropertyChanged(nameof(Symbol));
                 OnPropertyChanged(nameof(CanSearchSymbol));
             }
         }
+
+        public string Symbol => SelectedAsset?.Symbol ?? string.Empty;
 
         public bool CanSearchSymbol => !string.IsNullOrEmpty(Symbol);
 
@@ -59,31 +65,25 @@ namespace SimpleTrader.WPF.ViewModels
             }
         }
 
-        private int _sharesToBuy;
-        public int SharesToBuy
+        private int _sharesToSell;
+        public int SharesToSell
         {
             get
             {
-                return _sharesToBuy;
+                return _sharesToSell;
             }
             set
             {
-                _sharesToBuy = value;
-                OnPropertyChanged(nameof(SharesToBuy));
+                _sharesToSell = value;
+                OnPropertyChanged(nameof(SharesToSell));
                 OnPropertyChanged(nameof(TotalPrice));
-                OnPropertyChanged(nameof(CanBuyStock));
+                OnPropertyChanged(nameof(CanSellStock));
             }
         }
 
-        public bool CanBuyStock => SharesToBuy > 0;
+        public bool CanSellStock => SharesToSell > 0;
 
-        public double TotalPrice
-        {
-            get
-            {
-                return SharesToBuy * StockPrice;
-            }
-        }
+        public double TotalPrice => SharesToSell * StockPrice;
 
         public MessageViewModel ErrorMessageViewModel { get; }
 
@@ -99,20 +99,26 @@ namespace SimpleTrader.WPF.ViewModels
             set => StatusMessageViewModel.Message = value;
         }
 
-        public ICommand SearchSymbolCommand { get; set; }
-        public ICommand BuyStockCommand { get; set; }
+        public ICommand SearchSymbolCommand { get; }
+        public ICommand SellStockCommand { get; }
 
-        public BuyViewModel(IStockPriceService stockPriceService, IBuyStockService buyStockService, IAccountStore accountStore)
+        public SellViewModel(AssetStore assetStore,
+            IStockPriceService stockPriceService,
+            IAccountStore accountStore,
+            ISellStockService sellStockService)
         {
-            ErrorMessageViewModel = new MessageViewModel();
-            StatusMessageViewModel = new MessageViewModel();
+            AssetListingViewModel = new AssetListingViewModel(assetStore);
 
             SearchSymbolCommand = new SearchSymbolCommand(this, stockPriceService);
-            BuyStockCommand = new BuyStockCommand(this, buyStockService, accountStore);
+            SellStockCommand = new SellStockCommand(this, sellStockService, accountStore);
+
+            ErrorMessageViewModel = new MessageViewModel();
+            StatusMessageViewModel = new MessageViewModel();
         }
 
         //public override void Dispose()
         //{
+        //    AssetListingViewModel.Dispose();
         //    ErrorMessageViewModel.Dispose();
         //    StatusMessageViewModel.Dispose();
 

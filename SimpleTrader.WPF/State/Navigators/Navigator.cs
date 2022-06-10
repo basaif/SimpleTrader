@@ -29,6 +29,6 @@ namespace SimpleTrader.WPF.State.Navigators
             }
         }
 
-        public event Action StateChanged;
+        public event Action? StateChanged;
     }
 }

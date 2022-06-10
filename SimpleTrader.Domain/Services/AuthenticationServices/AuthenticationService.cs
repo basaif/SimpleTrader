@@ -73,7 +73,8 @@ namespace SimpleTrader.Domain.Services.AuthenticationServices
 
                 Account account = new()
                 {
-                    AccountHolder = user
+                    AccountHolder = user,
+                    Balance = 500
                 };
 
                 await _accountService.Create(account); 

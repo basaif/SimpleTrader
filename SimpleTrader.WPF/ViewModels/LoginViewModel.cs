@@ -55,5 +55,12 @@ namespace SimpleTrader.WPF.ViewModels
             ViewRegisterCommand = new RenavigateCommand(registerRenavigator);
         }
 
+        public override void Dispose()
+        {
+            ErrorMessageViewModel.Dispose();
+
+            base.Dispose();
+        }
+
     }
 }

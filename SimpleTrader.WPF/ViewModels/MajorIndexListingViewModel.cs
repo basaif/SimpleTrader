@@ -24,9 +24,6 @@ namespace SimpleTrader.WPF.ViewModels
         {
             get
             {
-                //_dowJones.Type = MajorIndexType.DowJones;
-                //_dowJones.Price = 765.54;
-                //_dowJones.Changes = 32.32;
                 return _dowJones;
             }
 
@@ -40,9 +37,6 @@ namespace SimpleTrader.WPF.ViewModels
         {
             get
             {
-                //_nasdaq.Type = MajorIndexType.Nasdaq;
-                //_nasdaq.Price = 4324243.54;
-                //_nasdaq.Changes = -332432.32;
                 return _nasdaq;
             }
 
@@ -56,9 +50,6 @@ namespace SimpleTrader.WPF.ViewModels
         {
             get
             {
-                //_sP500.Type = MajorIndexType.SP500;
-                //_sP500.Price = 3244.22;
-                //_sP500.Changes = 9009.21;
                 return _sP500;
             }
 

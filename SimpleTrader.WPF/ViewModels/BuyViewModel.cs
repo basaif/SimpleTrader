@@ -111,12 +111,12 @@ namespace SimpleTrader.WPF.ViewModels
             BuyStockCommand = new BuyStockCommand(this, buyStockService, accountStore);
         }
 
-        //public override void Dispose()
-        //{
-        //    ErrorMessageViewModel.Dispose();
-        //    StatusMessageViewModel.Dispose();
+        public override void Dispose()
+        {
+            ErrorMessageViewModel.Dispose();
+            StatusMessageViewModel.Dispose();
 
-        //    base.Dispose();
-        //}
+            base.Dispose();
+        }
     }
 }

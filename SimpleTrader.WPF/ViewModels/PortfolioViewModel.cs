@@ -17,5 +17,12 @@ namespace SimpleTrader.WPF.ViewModels
             AssetListingViewModel = new(assetStore);
         }
 
+        public override void Dispose()
+        {
+            AssetListingViewModel.Dispose();
+
+            base.Dispose();
+        }
+
     }
 }

@@ -17,5 +17,13 @@ namespace SimpleTrader.WPF.ViewModels
             AssetSummaryViewModel = assetSummaryViewModel;
 
         }
+
+        public override void Dispose()
+        {
+            AssetSummaryViewModel.Dispose();
+            MajorIndexListingViewModel.Dispose();
+
+            base.Dispose();
+        }
     }
 }

@@ -44,10 +44,27 @@ namespace SimpleTrader.WPF.ViewModels
 
             assetViewModels = _filterAssets(assetViewModels);
 
+            DisposeAssets();
             _assets.Clear();
             foreach (AssetViewModel viewModel in assetViewModels)
             {
                 _assets.Add(viewModel);
+            }
+        }
+
+
+        public override void Dispose()
+        {
+            _assetStore.StateChanged -= OnAssetsChanged;
+            DisposeAssets();
+
+            base.Dispose();
+        }
+        private void DisposeAssets()
+        {
+            foreach (AssetViewModel asset in _assets)
+            {
+                asset.Dispose();
             }
         }
     }

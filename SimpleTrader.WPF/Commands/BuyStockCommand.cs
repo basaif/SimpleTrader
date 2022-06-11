@@ -29,6 +29,7 @@ namespace SimpleTrader.WPF.Commands
             _buyViewModel.PropertyChanged += BuyViewModel_PropertyChanged;
         }
 
+
         public override bool CanExecute(object? parameter)
         {
             return _buyViewModel.CanBuyStock && base.CanExecute(parameter);

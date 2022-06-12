@@ -20,11 +20,11 @@
             <DataTemplate DataType="{x:Type ViewModels:BuyViewModel}">
                 <Views:BuyView />
             </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type ViewModels:SellViewModel}">
                 <Views:SellView SelectedAssetChangedCommand="{Binding SearchSymbolCommand}" />
             </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type ViewModels:LoginViewModel}">
                 <Views:LoginView />
             </DataTemplate>
